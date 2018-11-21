@@ -27,5 +27,6 @@ namespace Storage.Service.Interfaces
         Task RemoveMultiple(IList<TEntity> entities, Guid? updaterId);
 
         IQueryable<TEntity> Queryable(Expression<Func<TEntity, bool>> filterExpression = null);
+        Task Remove(Guid id);
     }
 }

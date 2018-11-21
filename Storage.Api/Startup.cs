@@ -66,6 +66,8 @@ namespace Storage.Api
         {
             services.AddScoped<AppInitializer>();
             services.AddScoped<ILoginHistoryService, LoginHistoryService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IPermissionService, PermissionService>();
 
             Mapper.Initialize(cfg =>
             {

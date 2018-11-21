@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Storage.Model;
@@ -9,9 +10,10 @@ using Storage.Model;
 namespace Storage.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181120173651_Add_Role_Permisson_Table_21122018")]
+    partial class Add_Role_Permisson_Table_21122018
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,9 +258,14 @@ namespace Storage.Api.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<Guid>("RoleId");
+
                     b.Property<DateTime>("UpdatedDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId")
+                        .IsUnique();
 
                     b.ToTable("Permissions");
                 });
@@ -279,19 +286,6 @@ namespace Storage.Api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("Storage.Model.Entities.temp.RolePermission", b =>
-                {
-                    b.Property<Guid>("RoleId");
-
-                    b.Property<Guid>("PermissionId");
-
-                    b.HasKey("RoleId", "PermissionId");
-
-                    b.HasIndex("PermissionId");
-
-                    b.ToTable("RolePermission");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -339,16 +333,11 @@ namespace Storage.Api.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Storage.Model.Entities.temp.RolePermission", b =>
+            modelBuilder.Entity("Storage.Model.Entities.Permission", b =>
                 {
-                    b.HasOne("Storage.Model.Entities.Permission", "Permission")
-                        .WithMany("Roles")
-                        .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Storage.Model.Entities.Role", "Role")
-                        .WithMany("Permissions")
-                        .HasForeignKey("RoleId")
+                        .WithOne("Permission")
+                        .HasForeignKey("Storage.Model.Entities.Permission", "RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

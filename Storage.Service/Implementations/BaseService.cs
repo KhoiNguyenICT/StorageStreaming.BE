@@ -91,5 +91,11 @@ namespace Storage.Service.Implementations
             if (filterExpression == null) return _context.Set<TEntity>().AsNoTracking();
             return _context.Set<TEntity>().AsNoTracking().Where(filterExpression);
         }
+        public async Task Remove(Guid id)
+        {
+            var entity = _context.Set<TEntity>().Find(id);
+            _context.Entry(entity).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
+        }
     }
 }
