@@ -7,6 +7,6 @@ namespace Storage.Model.Entities
     {
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public virtual IEnumerable<RolePermission> Permissions { get; internal set; }
+        public virtual ICollection<RolePermission> RolePermissions { get; set; }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Storage.Common.Interfaces;
 using Storage.Model.Entities;
 using Storage.Model.Entities.temp;
+using Storage.Model.EntitiesConfiguration;
 
 namespace Storage.Model
 {
@@ -22,21 +23,18 @@ namespace Storage.Model
         public virtual DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
         public virtual DbSet<LoginHistory> LoginHistories { get; set; }
-        public virtual DbSet<Permission> Permissions { get; set; }
-        public virtual DbSet<Role> Roles { get; set; }
 
+        public virtual DbSet<Permission> Permissions { get; set; }
+
+        public virtual DbSet<Role> Roles { get; set; }
+        
+        public virtual DbSet<RolePermission> RolePermissions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RolePermission>()
-                .HasOne(bc => bc.Role)
-                .WithMany(b => b.Permissions)
-                .HasForeignKey(bc => bc.RoleId);
-
-            modelBuilder.Entity<RolePermission>()
-                .HasOne(bc => bc.Permission)
-                .WithMany(b => b.Roles)
-                .HasForeignKey(bc => bc.PermissionId);
+            modelBuilder.ApplyConfiguration(new PermissionEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RoleEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new RolePermissionEntityConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

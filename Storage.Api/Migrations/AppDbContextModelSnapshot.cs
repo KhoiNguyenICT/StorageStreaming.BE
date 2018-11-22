@@ -283,15 +283,24 @@ namespace Storage.Api.Migrations
 
             modelBuilder.Entity("Storage.Model.Entities.temp.RolePermission", b =>
                 {
-                    b.Property<Guid>("RoleId");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<Guid>("PermissionId");
 
-                    b.HasKey("RoleId", "PermissionId");
+                    b.Property<Guid>("RoleId");
+
+                    b.Property<DateTime>("UpdatedDate");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("PermissionId");
 
-                    b.ToTable("RolePermission");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RolePermissions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -342,12 +351,12 @@ namespace Storage.Api.Migrations
             modelBuilder.Entity("Storage.Model.Entities.temp.RolePermission", b =>
                 {
                     b.HasOne("Storage.Model.Entities.Permission", "Permission")
-                        .WithMany("Roles")
+                        .WithMany("RolePermissions")
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Storage.Model.Entities.Role", "Role")
-                        .WithMany("Permissions")
+                        .WithMany("RolePermissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

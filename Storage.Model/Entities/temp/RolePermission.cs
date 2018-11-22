@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Storage.Model.Entities.temp
 {
-    public class RolePermission
+    public class RolePermission: BaseEntity
     {
         public Guid RoleId { get; set; }
         public Guid PermissionId { get; set; }
